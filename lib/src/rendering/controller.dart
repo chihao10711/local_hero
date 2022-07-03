@@ -16,7 +16,7 @@ class LocalHeroController {
     required this.curve,
     required this.createRectTween,
     required this.tag,
-  })   : link = LayerLink(),
+  })  : link = LayerLink(),
         _vsync = vsync,
         _initialDuration = duration;
 
@@ -90,11 +90,11 @@ class LocalHeroController {
           );
 
       if (!inAnimation) {
-        SchedulerBinding.instance!.addPostFrameCallback((_) {
+        SchedulerBinding.instance?.addPostFrameCallback((_) {
           _controller.forward();
         });
       } else {
-        SchedulerBinding.instance!.addPostFrameCallback((_) {
+        SchedulerBinding.instance?.addPostFrameCallback((_) {
           final Duration duration =
               _controller.duration! * (1 - _controller.value);
           _controller.reset();

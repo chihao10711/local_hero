@@ -147,7 +147,7 @@ class _WrapReorderingAnimationState extends State<_WrapReorderingAnimation> {
   @override
   void initState() {
     super.initState();
-    final List<MaterialColor> colors = Colors.primaries;
+    const List<MaterialColor> colors = Colors.primaries;
     for (var i = 0; i < colors.length; i++) {
       tiles.add(_TileModel(color: colors[i], text: '$i'));
     }
@@ -222,12 +222,12 @@ class _AcrossContainersAnimationState
   @override
   void initState() {
     super.initState();
-    final List<MaterialColor> primaries = Colors.primaries;
+    const List<MaterialColor> primaries = Colors.primaries;
     for (var i = 0; i < 5; i++) {
       final _TileModel tile = _TileModel(color: primaries[i], text: 'p$i');
       rowTiles.add(tile);
     }
-    final List<MaterialAccentColor> accents = Colors.accents;
+    const List<MaterialAccentColor> accents = Colors.accents;
     for (var i = 0; i < 5; i++) {
       final _TileModel tile = _TileModel(color: accents[i], text: 'a$i');
       colTiles.add(tile);
@@ -236,49 +236,51 @@ class _AcrossContainersAnimationState
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(4),
-          child: Row(
-            children: <Widget>[
-              ...rowTiles.map(
-                (tile) => _Tile(
-                  key: ValueKey(tile),
-                  model: tile,
-                  size: 80,
-                  onTap: () {
-                    setState(() {
-                      colTiles.add(tile);
-                      rowTiles.remove(tile);
-                    });
-                  },
+    return LocalHeroOverlay(
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(4),
+            child: Column(
+              children: <Widget>[
+                ...rowTiles.map(
+                  (tile) => _Tile(
+                    key: ValueKey(tile),
+                    model: tile,
+                    size: 80,
+                    onTap: () {
+                      setState(() {
+                        colTiles.add(tile);
+                        rowTiles.remove(tile);
+                      });
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        const SizedBox(height: 10),
-        Expanded(
-          child: Column(
-            children: <Widget>[
-              ...colTiles.map(
-                (tile) => _Tile(
-                  key: ValueKey(tile),
-                  model: tile,
-                  size: 60,
-                  onTap: () {
-                    setState(() {
-                      rowTiles.add(tile);
-                      colTiles.remove(tile);
-                    });
-                  },
+          const SizedBox(height: 10),
+          Expanded(
+            child: Wrap(
+              children: <Widget>[
+                ...colTiles.map(
+                  (tile) => _Tile(
+                    key: ValueKey(tile),
+                    model: tile,
+                    size: 60,
+                    onTap: () {
+                      setState(() {
+                        rowTiles.add(tile);
+                        colTiles.remove(tile);
+                      });
+                    },
+                  ),
                 ),
-              ),
-            ],
-          ),
-        )
-      ],
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }
@@ -298,7 +300,7 @@ class _DraggableExampleState extends State<_DraggableExample> {
   @override
   void initState() {
     super.initState();
-    final List<MaterialColor> colors = Colors.primaries;
+    const List<MaterialColor> colors = Colors.primaries;
     for (var i = 0; i < colors.length; i++) {
       tiles.add(_TileModel(color: colors[i], text: 'd$i'));
     }
@@ -306,25 +308,27 @@ class _DraggableExampleState extends State<_DraggableExample> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Wrap(
-        children: <Widget>[
-          ...tiles.map(
-            (tile) => DragTarget<_TileModel>(
-              key: ValueKey(tile),
-              onWillAccept: (data) {
-                final bool accept = data != tile;
-                if (accept) {
-                  onDrag(data, tile);
-                }
-                return accept;
-              },
-              builder: (context, candidateData, rejectedData) {
-                return _DraggableTile(model: tile);
-              },
+    return LocalHeroOverlay(
+      child: Center(
+        child: Wrap(
+          children: <Widget>[
+            ...tiles.map(
+              (tile) => DragTarget<_TileModel>(
+                key: ValueKey(tile),
+                onWillAccept: (data) {
+                  final bool accept = data != tile;
+                  if (accept) {
+                    onDrag(data, tile);
+                  }
+                  return accept;
+                },
+                builder: (context, candidateData, rejectedData) {
+                  return _DraggableTile(model: tile);
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
